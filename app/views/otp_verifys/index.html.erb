@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Page Title</title>
+  <!-- Add your existing stylesheets and other meta tags here -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+
+    header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #444;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end; /* Align to the right */
+    }
+
+    nav li {
+      margin: 0 15px;
+    }
+
+    section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column; /* Center elements vertically */
+      height: 80vh; /* Adjust the height as needed */
+    }
+
+    .login-form,
+    .otp-form {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #countdown {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    #resend {
+      display: none;
+      margin-top: 10px;
+    }
+
+    #resend-btn {
+      padding: 10px 15px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    #resend-btn:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <% if user_signed_in? %>
+      <li><%= link_to 'Sign out', destroy_user_session_path, data: { turbo_method: :delete } %></li>
+    <% else %>
+      <li><%= link_to 'Sign in', new_user_session_path %></li>
+      <li><%= link_to 'Sign up', new_user_registration_path %></li>
+    <% end %>
+  </ul>
+</nav>
+
+<section>
+  <% if user_signed_in? %>
+    <div class="otp-form">
+      <%= form_with(url: otp_verifys_path, method: :post) do |form| %>
+        <label for="otp">Enter OTP:</label>
+        <%= form.text_field :otp, id: "otp", placeholder: "Enter your OTP" %>
+        <h2 id="countdown"></h2>
+        <%= form.submit 'Submit OTP' %>
+        <div id="resend">
+          <p>Didn t receive OTP?</p>
+          <%= link_to 'Resend OTP', otp_verify_path(current_user.id), method: :post, class: 'btn btn-primary' %>
+
+
+
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="login-form">
+      <!-- Your login form goes here -->
+    </div>
+  <% end %>
+</section>
+
+<!-- Your other content goes here -->
+<script>
+  var countdown = 5;
+
+  function updateCountdown() {
+    document.getElementById('countdown').innerHTML = countdown;
+
+    if (countdown === 0) {
+      document.getElementById('resend').style.display = "block";
+      document.getElementById('countdown').style.display = "none";
+      clearInterval(countdownInterval);
+    } else {
+      countdown--;
+    }
+  }
+
+updateCountdown();
+
+  var countdownInterval = setInterval(updateCountdown, 1000);
+
+</script>
+</body>
+</html>

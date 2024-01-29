@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  otp: MyString
+  user: one
+
+two:
+  otp: MyString
+  user: two
