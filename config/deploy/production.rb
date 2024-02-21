@@ -7,6 +7,11 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
+# config/deploy/production.rb
+set :stage, :production
+server '34.224.69.82', user: 'ubuntu', roles: %w{app web db}
+
+# other production-specific configurations...
 
 
 # role-based syntax
