@@ -3,7 +3,7 @@ lock "~> 3.18.0"
 
 set :application, "facebook_with_OTP"
 set :repo_url, "https://github.com/ManikantaAyinam123/facebook_with_OTP.git"
-set :deploy_to, 'C:\Users\GitHub\facebook_with_OTP'
+set :deploy_to, '/home/ubuntu/facebook_with_OTP'
 set :use_sudo, true
 set :branch, 'main'
 set :linked_files, %w{config/master.key config/database.yml}
@@ -32,7 +32,21 @@ end
 end
 before :start, :make_dirs
 end
-
+# config/deploy.rb
+# config/deploy.rb
+namespace :deploy do
+    desc 'Start the application'
+    task :start do
+      on roles(:app) do
+        # Your start commands here
+        within release_path do
+          execute :bundle, :exec, :rails, 'your:start:command'
+        end
+      end
+    end
+  end
+  
+  
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
